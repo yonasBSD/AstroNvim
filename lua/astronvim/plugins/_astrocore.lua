@@ -2,19 +2,23 @@ local astronvim = require "astronvim"
 astronvim.init()
 
 return {
-  { "folke/lazy.nvim", dir = vim.env.LAZY },
+  { "folke/lazy.nvim", dir = vim.env.LAZY, opts = { rocks = { enabled = vim.fn.executable "luarocks" == 1 } } },
+  { "nvim-lua/plenary.nvim", lazy = true, build = false },
   {
     "AstroNvim/AstroNvim",
     build = function()
       if astronvim.config.pin_plugins and astronvim.config.update_notification ~= false then
-        vim.schedule(
-          function()
-            require("astrocore").notify(
-              "Pinned versions of core plugins may have been updated\nRun `:Lazy update` again to get these updates.",
-              vim.log.levels.WARN
-            )
-          end
-        )
+        local astrocore_avail, astrocore = pcall(require, "astrocore")
+        if astrocore_avail then
+          vim.schedule(
+            function()
+              astrocore.notify(
+                "Pinned versions of core plugins may have been updated\nRun `:Lazy update` again to get these updates.",
+                vim.log.levels.WARN
+              )
+            end
+          )
+        end
       end
     end,
     priority = 10000,
