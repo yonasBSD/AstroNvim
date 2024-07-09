@@ -1,7 +1,7 @@
 return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

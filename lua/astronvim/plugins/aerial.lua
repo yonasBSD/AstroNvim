@@ -1,7 +1,7 @@
 return {
   "stevearc/aerial.nvim",
   event = "User AstroFile",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

@@ -12,7 +12,7 @@ return {
     "MasonUninstallAll",
     "MasonLog",
   },
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

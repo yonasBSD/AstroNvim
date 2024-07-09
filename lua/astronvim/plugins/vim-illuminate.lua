@@ -1,7 +1,7 @@
 return {
   "RRethy/vim-illuminate",
   event = "User AstroFile",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

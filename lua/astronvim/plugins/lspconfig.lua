@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrolsp",
       opts = function(_, opts)
@@ -9,6 +9,8 @@ return {
           { "<Cmd>LspInfo<CR>", desc = "LSP information", cond = function() return vim.fn.exists ":LspInfo" > 0 end }
       end,
     },
+  },
+  dependencies = {
     { "folke/neoconf.nvim", lazy = true, opts = {} },
     {
       "williamboman/mason-lspconfig.nvim",

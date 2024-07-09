@@ -1,7 +1,7 @@
 return {
   "nvimtools/none-ls.nvim",
   main = "null-ls",
-  dependencies = {
+  specs = {
     { "nvim-lua/plenary.nvim", lazy = true },
     {
       "AstroNvim/astrolsp",
@@ -14,6 +14,8 @@ return {
         }
       end,
     },
+  },
+  dependencies = {
     {
       "jay-babu/mason-null-ls.nvim",
       dependencies = { "williamboman/mason.nvim" },
