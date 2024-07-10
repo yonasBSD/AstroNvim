@@ -157,8 +157,9 @@ return {
               if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
                 local skip_augroups = {}
                 for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
-                  if autocmd.group_name ~= "filetypedetect" then skip_augroups[autocmd.group_name] = true end
+                  skip_augroups[autocmd.group_name] = true
                 end
+                skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
                 astro.event "File"
                 local folder = vim.fn.fnamemodify(current_file, ":p:h")
                 if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
@@ -178,6 +179,7 @@ return {
                           args.event,
                           { group = autocmd.group_name, buffer = args.buf, data = args.data }
                         )
+                        skip_augroups[autocmd.group_name] = true
                       end
                     end
                   end
