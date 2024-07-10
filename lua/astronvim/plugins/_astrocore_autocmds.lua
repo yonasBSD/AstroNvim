@@ -155,6 +155,11 @@ return {
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
               if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
+                local skip_augroups = {}
+                for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                  skip_augroups[autocmd.group_name] = true
+                end
+                skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
                 astro.event "File"
                 local folder = vim.fn.fnamemodify(current_file, ":p:h")
                 if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
@@ -168,7 +173,15 @@ return {
                 end
                 vim.schedule(function()
                   if require("astrocore.buffer").is_valid(args.buf) then
-                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data })
+                    for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                      if not skip_augroups[autocmd.group_name] then
+                        vim.api.nvim_exec_autocmds(
+                          args.event,
+                          { group = autocmd.group_name, buffer = args.buf, data = args.data }
+                        )
+                        skip_augroups[autocmd.group_name] = true
+                      end
+                    end
                   end
                 end)
               end
